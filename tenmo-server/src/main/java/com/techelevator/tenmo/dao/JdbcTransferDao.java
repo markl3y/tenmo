@@ -1,20 +1,22 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Component
-public class JdbcTransactionDao implements TransactionDao {
+public class JdbcTransferDao implements TransferDao {
 
     // Instance Variables
     private JdbcTemplate jdbcTemplate;
 
     // Constructor
-    public JdbcTransactionDao(JdbcTemplate jdbcTemplate) {
+    public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -29,4 +31,36 @@ public class JdbcTransactionDao implements TransactionDao {
         }
         throw new UsernameNotFoundException("User " + userId + " was not found.");
     }
+
+    @Override
+    public Transfer sendFunds(Transfer transfer) {
+        return null;
+    }
+
+    @Override
+    public Transfer requestFunds(Transfer transfer) {
+        return null;
+    }
+
+    @Override
+    public List<Transfer> findAllTransfersByUserID(int userId) {
+        return null;
+    }
+
+    @Override
+    public List<Transfer> findTransfersByUserIdAndTransferStatus(int userId, String transferStatus) {
+        return null;
+    }
+
+    @Override
+    public Transfer changeTransferStatus(int transferId, String transferStatus) {
+        return null;
+    }
+
+    @Override
+    public Transfer getTransferById(int transferId) {
+        return null;
+    }
+
+
 }

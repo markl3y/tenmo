@@ -12,13 +12,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 
-public class TransactionService {
+public class TransferService {
 
     private final String baseURL;
     private final AuthenticatedUser authenticatedUser;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public TransactionService(String url, AuthenticatedUser authenticatedUser) {
+    public TransferService(String url, AuthenticatedUser authenticatedUser) {
         this.baseURL = url;
         this.authenticatedUser = authenticatedUser;
     }

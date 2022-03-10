@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-public class TransactionServiceTest {
+public class TransferServiceTest {
 
     @Test
     public void getBalance_returns_correct_balance_from_transaction_service() {

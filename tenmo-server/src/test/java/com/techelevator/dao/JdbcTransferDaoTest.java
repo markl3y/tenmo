@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-public class JdbcTransactionDaoTest {
+public class JdbcTransferDaoTest {
 
     @Test
     public void findAccountBalanceByUserId_returns_correct_account_balance_for_user_id() {

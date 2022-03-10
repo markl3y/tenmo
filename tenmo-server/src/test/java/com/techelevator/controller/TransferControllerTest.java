@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-public class TransactionControllerTest {
+public class TransferControllerTest {
 
     @Test
     public void getUserBalance_returns_correct_user_balance_for_principal() {
