@@ -1,6 +1,6 @@
-package com.techelevator.tenmo.dao;
+package com.techelevator.tenmo.security.dao;
 
-import com.techelevator.tenmo.model.User;
+import com.techelevator.tenmo.security.model.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -18,8 +18,13 @@ public class JdbcUserDao implements UserDao {
     private static final BigDecimal STARTING_BALANCE = new BigDecimal("1000.00");
     private JdbcTemplate jdbcTemplate;
 
+    // Constructor
     public JdbcUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public JdbcTemplate getJdbcTemplate() {
+        return jdbcTemplate;
     }
 
     @Override

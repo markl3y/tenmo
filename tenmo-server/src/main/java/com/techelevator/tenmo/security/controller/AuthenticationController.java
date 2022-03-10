@@ -1,4 +1,4 @@
-package com.techelevator.tenmo.controller;
+package com.techelevator.tenmo.security.controller;
 
 import javax.validation.Valid;
 
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.LoginDTO;
-import com.techelevator.tenmo.model.RegisterUserDTO;
-import com.techelevator.tenmo.model.User;
+import com.techelevator.tenmo.security.dao.UserDao;
+import com.techelevator.tenmo.security.model.LoginDTO;
+import com.techelevator.tenmo.security.model.RegisterUserDTO;
+import com.techelevator.tenmo.security.model.User;
 import com.techelevator.tenmo.security.jwt.TokenProvider;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -62,6 +62,7 @@ public class AuthenticationController {
     /**
      * Object to return as body in JWT Authentication.
      */
+    //TODO -- ASK Mike about this class inside a class
     static class LoginResponse {
 
         private String token;

@@ -1,7 +1,8 @@
-package com.techelevator.tenmo.model;
+package com.techelevator.tenmo.security.model;
 
 import java.util.Objects;
 
+//TODO -- Ask Mike what this class is for
 public class Authority {
 
    private String name;
