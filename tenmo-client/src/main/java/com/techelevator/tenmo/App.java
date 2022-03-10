@@ -4,6 +4,11 @@ import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.TransactionService;
+import com.techelevator.util.BasicLogger;
+import org.springframework.core.io.support.DefaultPropertySourceFactory;
+
+import java.math.BigDecimal;
 
 public class App {
 
@@ -11,6 +16,7 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
+    private TransactionService transactionService;
 
     private AuthenticatedUser currentUser;
 
@@ -61,6 +67,7 @@ public class App {
     }
 
     private void mainMenu() {
+        transactionService = new TransactionService(API_BASE_URL, currentUser); //TODO -- show Tye
         int menuSelection = -1;
         while (menuSelection != 0) {
             consoleService.printMainMenu();
@@ -86,7 +93,11 @@ public class App {
 
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
-		
+        if (transactionService.getBalance() != null) {
+            System.out.printf("Your current account balance is: $%s%n", transactionService.getBalance());
+        } else {
+            consoleService.printErrorMessage();
+        }
 	}
 
 	private void viewTransferHistory() {

@@ -24,8 +24,13 @@ public class TransactionController {
 
     @GetMapping(path = "/balance")
     public BigDecimal getUserBalance(Principal principal) {
-        String username = principal.getName();
-        int userId = userDao.findIdByUsername(username);
+        int userId = getCurrentUserId(principal);
         return transactionDao.findAccountBalanceByUserId(userId);
+    }
+
+    // Helper method
+    private int getCurrentUserId(Principal principal) {
+        String username = principal.getName();
+        return userDao.findIdByUsername(username);
     }
 }
