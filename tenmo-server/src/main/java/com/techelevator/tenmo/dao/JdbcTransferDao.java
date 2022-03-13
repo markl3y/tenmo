@@ -1,15 +1,15 @@
 package com.techelevator.tenmo.dao;
 
 
+import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.security.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,7 +60,7 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public Transfer sendFunds(Transfer transfer) {
+    public Transfer sendFunds(Transfer transfer) throws TransferNotFoundException{
         // Unpack transfer
         int senderUserId = transfer.getSenderUserId();
         int receiverUserId = transfer.getReceiverUserId();
@@ -84,20 +84,27 @@ public class JdbcTransferDao implements TransferDao {
                     senderAccountId,
                     receiverAccountId,
                     transferAmount);
-            Transfer transferFromDatabase = getTransferById(transferId);
-            return transferFromDatabase;
+            return getTransferById(transferId);
         }
         return null;
     }
 
     @Override
-    public Transfer requestFunds(int userId, int receiverId, BigDecimal amount) {
-        Transfer returnTransfer = new Transfer(
+    public Transfer requestFunds(Transfer transfer) {
+        Transfer returnTransfer = new Transfer();
+        return returnTransfer;
     }
 
     @Override
     public List<Transfer> findAllTransfersByUserID(int userId) {
-        return null;
+        int account = getAccountByUserId(userId);
+        List<Transfer> transfers = new ArrayList<>();
+        String sql = "SELECT * FROM transfer WHERE (account_from = ? OR (account_to = ?));";
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, account, account);
+        while (rowSet.next()) {
+            transfers.add(mapRowToTransfer(rowSet));
+        }
+        return transfers;
     }
 
     @Override
@@ -111,7 +118,7 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public Transfer getTransferById(Integer transferId) {
+    public Transfer getTransferById(Integer transferId) throws TransferNotFoundException {
         final String sql = "SELECT * FROM transfer WHERE transfer_id = ?";
 //                "SELECT" +
 //                "transfer.transfer_id," +

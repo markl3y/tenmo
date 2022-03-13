@@ -2,17 +2,17 @@ package com.techelevator.tenmo.model.dto;
 
 public class UserDTO {
 
-    private Long userId;
+    private Long id;
     private String username;
 
     // Getters and Setters
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {

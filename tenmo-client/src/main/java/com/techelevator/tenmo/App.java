@@ -1,6 +1,8 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
@@ -92,7 +94,7 @@ public class App {
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
         if (transferService.getBalance() != null) {
-            System.out.printf("Your current account balance is: " + NumberFormat.getCurrencyInstance().format(transferService.getBalance());
+            System.out.println("\nYour current account balance is: " + NumberFormat.getCurrencyInstance().format(transferService.getBalance()));
         } else {
             consoleService.printErrorMessage();
         }
@@ -100,7 +102,11 @@ public class App {
 
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
-		
+        User currentUser = transferService.getCurrentUser();
+        String currentUserName = currentUser.getUsername();
+        User[] users = transferService.getAllOtherUsers();
+        Transfer[] transfers = transferService.getAllTransfers();
+		consoleService.printTransfers(transfers, users, currentUserName);
 	}
 
 	private void viewPendingRequests() {
@@ -110,7 +116,18 @@ public class App {
 
 	private void sendBucks() {
 		// TODO Auto-generated method stub
-		
+        User[] users = transferService.getAllOtherUsers();
+        consoleService.printOtherUsers(users);
+        Transfer transferEnteredByUser = consoleService.promptForSendTransferData(users);
+        if (transferEnteredByUser != null) {
+            User user = transferService.getCurrentUser();
+            int userId = Integer.parseInt(user.getId().toString());
+            transferEnteredByUser.setSenderUserId(userId);
+            Transfer transferFromAPI = transferService.sendBucks(transferEnteredByUser);
+            if (transferFromAPI == null) {
+                System.out.println("Transfer of type 'Send' was unsuccessful.");
+            } else System.out.println("Transfer of type 'Send' was successful!");
+        }
 	}
 
 	private void requestBucks() {

@@ -82,4 +82,11 @@ public class Transfer {
     public void setTransferStatus(String transferStatus) {
         this.transferStatus = transferStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Transfer{id= " + transferId + ", senderId= " + senderUserId + ", receiverId= " +
+                receiverUserId + ",transferAmount = " + transferAmount + ", transferType=" + transferType +
+                ", transferStatus =" + transferStatus + "}";
+    }
 }

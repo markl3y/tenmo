@@ -2,6 +2,7 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.exceptions.InvalidTransferException;
+import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.dto.UserDTO;
 import com.techelevator.tenmo.security.dao.UserDao;
@@ -52,7 +53,7 @@ public class TransferController {
             for (User user : userDao.findAll()) {
                 if (user.getId() != currentUserId) {
                     UserDTO userDTO = new UserDTO();
-                    userDTO.setUserId(user.getId());
+                    userDTO.setId(user.getId());
                     userDTO.setUsername(user.getUsername());
                     otherUsers.add(userDTO);
                 }
@@ -65,7 +66,7 @@ public class TransferController {
     @RequestMapping(path = "/transfer/send", method = RequestMethod.POST)
     public Transfer sendMoney(
             Principal principal,
-            @RequestBody Transfer initialTransfer) throws InvalidTransferException {
+            @RequestBody Transfer initialTransfer) throws InvalidTransferException, TransferNotFoundException {
         int id = getCurrentUserId(principal);
         initialTransfer.setSenderUserId(id);
         Transfer returnTransfer = transferDao.sendFunds(initialTransfer);
@@ -73,6 +74,25 @@ public class TransferController {
             throw new InvalidTransferException();
         }
         return returnTransfer;
+    }
+
+    @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
+    public Transfer getTransfer(@PathVariable int id) throws TransferNotFoundException {
+        return transferDao.getTransferById(id);
+    }
+
+    @RequestMapping(path = "transfers/all", method = RequestMethod.GET)
+    public List<Transfer> getAllTransfers(Principal principal) {
+        List<Transfer> transfers = new ArrayList<>();
+        int userId = getCurrentUserId(principal);
+        transfers = transferDao.findAllTransfersByUserID(userId);
+        return transfers;
+    }
+
+    @RequestMapping(path = "/users/current_user", method = RequestMethod.GET)
+    public User getCurrentUser(Principal principal) {
+        int currentUserId = getCurrentUserId(principal);
+        return userDao.findUserById(currentUserId);
     }
 
 
