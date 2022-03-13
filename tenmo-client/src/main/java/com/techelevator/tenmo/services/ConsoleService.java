@@ -62,7 +62,7 @@ public class ConsoleService {
         return scanner.nextLine();
     }
 
-//    public int promptForInt(String prompt) {
+//    public int promptForInt(String prompt) { //PROVIDED
 //        System.out.print(prompt);
 //        while (true) {
 //            try {
@@ -73,7 +73,7 @@ public class ConsoleService {
 //        }
 //    }
 //
-//    public BigDecimal promptForBigDecimal(String prompt) {
+//    public BigDecimal promptForBigDecimal(String prompt) { //PROVIDED
 //        System.out.print(prompt);
 //        while (true) {
 //            try {
@@ -87,34 +87,47 @@ public class ConsoleService {
     public Transfer promptForSendTransferData(User[] users) { //***NEW
         Transfer returnTransfer = new Transfer();
         boolean validId = false;
+
+        //List of other user Ids.
         List<Integer> ids = new ArrayList<>();
+        //For each user in the other users, add their userID to the list.
         for (User user : users) {
             ids.add(Integer.parseInt(user.getId().toString()));
         }
+
+        //Check validity of selected userId.
         do {
             System.out.print("\nEnter ID of user you are sending to (0 to cancel): ");
             String input = scanner.nextLine();
             try {
+                //Tries to parse it into integer.
                 int userId = Integer.parseInt(input);
 
+                //If it parses properly, and it is 0, it returns to main menu.
                 if (userId == 0) {
                     break;
                 }
+                //Checks the input integer against all other userIDs.
                 for (Integer id : ids) {
+                    //If the selected user id is in other users, then its a valid id,
+                    //and the receiver is the found users id.
                     if (userId == id) {
                         validId = true;
                         returnTransfer.setReceiverUserId(userId);
                     }
                 }
+                //Let the user know it's not valid input.
                 if (!validId) {
                     System.out.println("\nInvalid ID...");
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e) { //If we can't parse...
                 validId = false;
                 System.out.println("\nCould not find ID: " + input);
             }
         } while (!validId);
+
         boolean validAmount = false;
+        //Check to see if user input is valid amount.
         do {
             System.out.print("\nEnter amount: $");
             String input = scanner.nextLine();
@@ -143,7 +156,7 @@ public class ConsoleService {
                     "ID          Name\n" +
                     "-------------------------------------------");
             for (User user : otherUsers) {
-                System.out.println(user.getId() + "        " + user.getUsername());
+                System.out.printf("%d\t\t%s\n", user.getId(), user.getUsername());
             }
         } else {
             System.out.println("Other users not found...");

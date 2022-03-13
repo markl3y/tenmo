@@ -57,7 +57,8 @@ public class TransferService {
         User[] users = null;
         try {
             ResponseEntity<User[]> response =
-                    restTemplate.exchange(baseURL + "users", HttpMethod.GET, makeAuthEntity(), User[].class);
+                    restTemplate.exchange(baseURL + "users",
+                            HttpMethod.GET, makeAuthEntity(), User[].class);
             users = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -100,6 +101,7 @@ public class TransferService {
         return transfer;
     }
 
+    //This creates an entity of type Transfer.
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

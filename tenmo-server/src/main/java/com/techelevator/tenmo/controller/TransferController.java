@@ -29,12 +29,14 @@ public class TransferController {
         this.userDao = userDao;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(path = "/balance")
     public BigDecimal getUserBalance(Principal principal) {
         int userId = getCurrentUserId(principal);
         return transferDao.findAccountBalanceByUserId(userId);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(path = "/user")
     public String getUsername(int userId) {
         for (User user : userDao.findAll()) {
@@ -45,6 +47,7 @@ public class TransferController {
         return null;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(path = "/users")
     public List<UserDTO> getOtherUsers(Principal principal) {
         List<UserDTO> otherUsers = new ArrayList<>();
@@ -62,25 +65,34 @@ public class TransferController {
         return otherUsers;
     }
 
+    //This method posts a Transfer of type Send, and returns the transfer from transferDao.
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/transfer/send", method = RequestMethod.POST)
     public Transfer sendMoney(
             Principal principal,
             @RequestBody Transfer initialTransfer) throws InvalidTransferException, TransferNotFoundException {
         int id = getCurrentUserId(principal);
+        //Sets initial Transfers sender id to current sender id.
         initialTransfer.setSenderUserId(id);
+        //Plugs and chugs through the transferDao.
         Transfer returnTransfer = transferDao.sendFunds(initialTransfer);
         if (returnTransfer == null) {
             throw new InvalidTransferException();
         }
+        //If the returned transfer is not null, then all is well in the world, and it returns that transfer.
         return returnTransfer;
     }
 
+    //Find specific Transfer with a path variable of the transferId.
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
     public Transfer getTransfer(@PathVariable int id) throws TransferNotFoundException {
         return transferDao.getTransferById(id);
     }
 
+    //Returns a list of all Transfers with a receiver or sender account ID matching the current user ID.
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(path = "transfers/all", method = RequestMethod.GET)
     public List<Transfer> getAllTransfers(Principal principal) {
         List<Transfer> transfers = new ArrayList<>();
@@ -89,6 +101,7 @@ public class TransferController {
         return transfers;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(path = "/users/current_user", method = RequestMethod.GET)
     public User getCurrentUser(Principal principal) {
         int currentUserId = getCurrentUserId(principal);

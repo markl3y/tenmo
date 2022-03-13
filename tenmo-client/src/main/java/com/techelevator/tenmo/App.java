@@ -125,8 +125,8 @@ public class App {
             transferEnteredByUser.setSenderUserId(userId);
             Transfer transferFromAPI = transferService.sendBucks(transferEnteredByUser);
             if (transferFromAPI == null) {
-                System.out.println("Transfer of type 'Send' was unsuccessful.");
-            } else System.out.println("Transfer of type 'Send' was successful!");
+                System.out.println("Send unsuccessful.");
+            } else System.out.println("Send successful!");
         }
 	}
 

@@ -67,16 +67,20 @@ public class JdbcTransferDao implements TransferDao {
         BigDecimal transferAmount = transfer.getTransferAmount();
         String transferType = transfer.getTransferType();
         String transferStatus = transfer.getTransferStatus();
+
         // check to make sure this is going to be a valid transfer
         boolean isValidTransfer = validateTransfer(senderUserId, receiverUserId, transferAmount, SEND
                 , transferType, APPROVED, transferStatus);
+
         // only conduct the transfer if it is a valid transfer
         if (isValidTransfer) {
             // call some helper methods to finish preparing the SQL query
             int senderAccountId = getAccountByUserId(senderUserId);
             int receiverAccountId = getAccountByUserId(receiverUserId);
             Integer transferId = -1;
+            //First we have to update...
             jdbcTemplate.update(SEND_SQL, transferAmount, senderAccountId, transferAmount, receiverAccountId);
+            //Then we can grab an integer returning from the database.
             transferId = jdbcTemplate.queryForObject(RECORD_SQL,
                     Integer.class,
                     sendTypeId,
