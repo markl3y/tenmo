@@ -3,6 +3,7 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.security.dao.UserDao;
 
+import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface TransferDao {
 
     public BigDecimal findAccountBalanceByUserId(int userId);
 
-    public Transfer sendFunds(Transfer transfer);
+    public Transfer sendFunds(Transfer transfer) throws NullPointerException;
 
     public Transfer requestFunds(Transfer transfer);
 
@@ -18,7 +19,7 @@ public interface TransferDao {
 
     public List<Transfer> findTransfersByUserIdAndTransferStatus(int userId, String transferStatus);
 
-    public Transfer changeTransferStatus(int transferId, String transferStatus);
+    public Transfer changeTransferStatus(Integer transferId, String transferStatus);
 
-    public Transfer getTransferById(int transferId);
+    public Transfer getTransferById(Integer transferId) throws NullPointerException;
 }

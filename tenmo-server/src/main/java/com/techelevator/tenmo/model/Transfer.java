@@ -1,28 +1,35 @@
 package com.techelevator.tenmo.model;
 
-import com.techelevator.tenmo.security.model.User;
-
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 public class Transfer {
 
     // Instance variables
     int transferId;
+    @NotNull
+    @Min(0)
     int senderUserId;
+    @NotNull
+    @Min(0)
     int receiverUserId;
-    BigDecimal amountToTransfer;
+    @NotNull
+    @Positive
+    BigDecimal transferAmount;
+    @NotBlank
     String transferType;
+    @NotBlank
     String transferStatus;
 
     // Constructors
     public Transfer() {}
 
-    public Transfer(int transferId, int senderUserId, int receiverUserId, BigDecimal amountToTransfer,
+    public Transfer(int transferId, int senderUserId, int receiverUserId, BigDecimal transferAmount,
                     String transferType, String transferStatus) {
         this.transferId = transferId;
         this.senderUserId = senderUserId;
         this.receiverUserId = receiverUserId;
-        this.amountToTransfer = amountToTransfer;
+        this.transferAmount = transferAmount;
         this.transferType = transferType;
         this.transferStatus = transferStatus;
     }
@@ -52,12 +59,12 @@ public class Transfer {
         this.receiverUserId = receiverUserId;
     }
 
-    public BigDecimal getAmountToTransfer() {
-        return amountToTransfer;
+    public BigDecimal getTransferAmount() {
+        return transferAmount;
     }
 
-    public void setAmountToTransfer(BigDecimal amountToTransfer) {
-        this.amountToTransfer = amountToTransfer;
+    public void setTransferAmount(BigDecimal transferAmount) {
+        this.transferAmount = transferAmount;
     }
 
     public String getTransferType() {

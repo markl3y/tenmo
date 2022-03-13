@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,12 @@ public class TransferService {
         }
         return balance;
     }
+
+    public Transfer sendMoney(String receiverUsername, BigDecimal amount) {
+        Transfer returnTransfer = null;
+        return returnTransfer;
+    }
+
 
     /**
      * Returns an HttpEntity with the `Authorization: Bearer:` header
